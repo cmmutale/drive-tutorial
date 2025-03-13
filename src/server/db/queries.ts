@@ -4,7 +4,13 @@ import { db } from "~/server/db"
 import { file_table as filesSchema, folder_table as foldersSchema } from "~/server/db/schema"
 import { eq } from "drizzle-orm"
 
-export async function getAllParentFolders(folderId: number) {
+export const QUERIES = {
+    getAllParentFolders,
+    getFolders,
+    getFiles
+}
+
+async function getAllParentFolders(folderId: number) {
     // walk up the tree of folders until we reach the root
     const parents = [];
     let currentFolderId: number | null = folderId;
@@ -25,14 +31,14 @@ export async function getAllParentFolders(folderId: number) {
     return parents;
 }
 
-export function getFolders(folderId: number) {
+function getFolders(folderId: number) {
     return db
         .select()
         .from(foldersSchema)
         .where(eq(foldersSchema.parent, folderId))
 }
 
-export function getFiles(folderId: number) {
+function getFiles(folderId: number) {
     return db
         .select()
         .from(filesSchema)
