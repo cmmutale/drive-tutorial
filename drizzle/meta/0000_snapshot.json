@@ -1,0 +1,119 @@
+{
+  "version": "1",
+  "dialect": "singlestore",
+  "id": "9ac1d875-cdfc-49d2-b217-c6ee2f983dc8",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "files_table": {
+      "name": "files_table",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "parent": {
+          "name": "parent",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "size": {
+          "name": "size",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "parent_index": {
+          "name": "parent_index",
+          "columns": [
+            "id"
+          ],
+          "isUnique": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "files_table_id": {
+          "name": "files_table_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "folders_table": {
+      "name": "folders_table",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "parent": {
+          "name": "parent",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "parent_index": {
+          "name": "parent_index",
+          "columns": [
+            "id"
+          ],
+          "isUnique": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "folders_table_id": {
+          "name": "folders_table_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
+  }
+}
