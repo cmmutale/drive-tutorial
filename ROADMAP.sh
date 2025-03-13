@@ -6,3 +6,4 @@ https://youtu.be/c-hKSbzooAg?t=2156
 - Update schema to show files and folders
 - Seed database to test
 - Render them in the UI
+
