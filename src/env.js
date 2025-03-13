@@ -14,6 +14,7 @@ export const env = createEnv({
     SINGLESTORE_DATABASE: z.string(),
     SINGLESTORE_PORT: z.string(),
     SINGLESTORE_HOST: z.string(),
+    CLERK_SECRET_KEY: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -26,6 +27,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
   },
 
   /**
@@ -41,6 +43,9 @@ export const env = createEnv({
     SINGLESTORE_DATABASE: process.env.SINGLESTORE_DATABASE,
     SINGLESTORE_PORT: process.env.SINGLESTORE_PORT,
     SINGLESTORE_HOST: process.env.SINGLESTORE_HOST,
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
