@@ -1,9 +1,7 @@
 ## Note from 12-03-2025
 
-Just finished connecting database, next steps:
-https://youtu.be/c-hKSbzooAg?t=2156
+rendered data from database
+https://www.youtube.com/watch?v=c-hKSbzooAg&t=2156s
 
-- Update schema to show files and folders
-- Seed database to test
-- Render them in the UI
-
+- create dynamic routes
+- navigate to routes on handleClick()
