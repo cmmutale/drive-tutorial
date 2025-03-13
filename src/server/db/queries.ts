@@ -1,7 +1,7 @@
 import "server-only"
 
 import { db } from "~/server/db"
-import { file_table as filesSchema, folder_table as foldersSchema } from "~/server/db/schema"
+import { DB_FileType, file_table as filesSchema, folder_table as foldersSchema } from "~/server/db/schema"
 import { eq } from "drizzle-orm"
 
 export const QUERIES = {
@@ -43,4 +43,22 @@ function getFiles(folderId: number) {
         .select()
         .from(filesSchema)
         .where(eq(filesSchema.parent, folderId))
+}
+
+export const MUTATIONS = {
+    createFile
+}
+
+async function createFile(formData: {
+    file: {
+        name: string;
+        url: string;
+        size: number;
+    },
+    userId: string;
+}) {
+    return await db.insert(filesSchema).values({
+        ...formData.file,
+        parent: 1
+    });
 }
