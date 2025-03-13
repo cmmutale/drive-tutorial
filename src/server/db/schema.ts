@@ -6,7 +6,7 @@ export const createTable = singlestoreTableCreator((name) =>
   `drive-tutorial_${name}`,
 );
 
-export const files = createTable("files_table", {
+export const file_table = createTable("files_table", {
   id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   url: varchar("url", { length: 255 }).notNull(),
@@ -18,7 +18,7 @@ export const files = createTable("files_table", {
   ];
 });
 
-export const folders = createTable("folders_table", {
+export const folder_table = createTable("folders_table", {
   id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   parent: int("parent"),
