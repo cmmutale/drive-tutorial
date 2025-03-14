@@ -1,10 +1,8 @@
 "use client"
 
-import { Upload, ChevronRight, LineChart } from "lucide-react"
-import { Button } from "~/components/ui/button"
+import { ChevronRight } from "lucide-react"
 import {
     SignInButton,
-    SignUpButton,
     SignedIn,
     SignedOut,
     UserButton,
@@ -16,19 +14,20 @@ import { UploadButton } from "~/components/uploadthing"
 import { useRouter } from "next/navigation"
 
 export default function DriveContents(props: {
-    files: (typeof file_table.$inferSelect)[],
-    folders: (typeof folder_table.$inferSelect)[]
-    parents: (typeof folder_table.$inferSelect)[]
+    files: (typeof file_table.$inferSelect)[];
+    folders: (typeof folder_table.$inferSelect)[];
+    parents: (typeof folder_table.$inferSelect)[];
+    currentFolderId: number
 }) {
     const navigate = useRouter();
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-6xl mx-auto space-y-8">
                 <div className="flex justify-between items-center mb-6">
                     <div className="flex items-center">
                         <Link
-                            href={`/f/1`}
+                            href={`/drive`}
                             className="text-gray-300 hover:text-white mr-2"
                         >
                             My Drive
@@ -76,9 +75,15 @@ export default function DriveContents(props: {
                             <FileRow key={file.id} file={file} />
                         ))}
                     </ul>
-                    <UploadButton endpoint={`imageUploader`} onClientUploadComplete={() => {
-                        navigate.refresh();
-                    }} />
+                </div>
+                <div className="w-full flex">
+                    <UploadButton
+                        endpoint={`imageUploader`}
+                        onClientUploadComplete={() => {
+                            navigate.refresh();
+                        }} input={{
+                            folderId: props.currentFolderId,
+                        }} />
                 </div>
             </div>
         </div>

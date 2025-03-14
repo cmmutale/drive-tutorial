@@ -1,7 +1,8 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { auth } from "@clerk/nextjs/server";
-import { MUTATIONS } from "~/server/db/queries";
+import { MUTATIONS, QUERIES } from "~/server/db/queries";
+import { z } from "zod";
 
 const f = createUploadthing();
 
@@ -17,9 +18,11 @@ export const ourFileRouter = {
             maxFileSize: "4MB",
             maxFileCount: 1,
         },
-    })
+    }).input(
+        z.object({folderId: z.number()})
+    )
         // Set permissions and file types for this FileRoute
-        .middleware(async () => {
+        .middleware(async ({input}) => {
             // This code runs on your server before upload
             const user = await auth();
 
@@ -27,8 +30,15 @@ export const ourFileRouter = {
             // eslint-disable-next-line @typescript-eslint/only-throw-error
             if (!user.userId) throw new UploadThingError("Unauthorized");
 
+            const folder = await QUERIES.getFolderById(input.folderId);
+            if (!folder) throw new UploadThingError("Folder not found");
+
+            if(folder.ownerId !== user.userId) {
+                throw new UploadThingError("Unauthorized");
+            }
+
             // Whatever is returned here is accessible in onUploadComplete as `metadata`
-            return { userId: user.userId };
+            return { userId: user.userId, parentId: input.folderId };
         })
         .onUploadComplete(async ({ metadata, file }) => {
             // This code RUNS ON YOUR SERVER after upload
@@ -40,7 +50,7 @@ export const ourFileRouter = {
                     name: file.name,
                     url: file.url,
                     size: file.size,
-                    // parent: 1
+                    parent: metadata.parentId
                 },
                 userId: metadata.userId,
             })

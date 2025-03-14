@@ -9,6 +9,8 @@
 
 # 1-13-25
 
+- [ ] handle no root (empty drive)
+- [ ] add ownership files
 - [ ] functional homepage
 - [ ] allow for dynamic parent folder
 - [ ] delete files
