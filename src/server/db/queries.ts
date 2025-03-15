@@ -31,9 +31,6 @@ export const QUERIES = {
     }
     ,
     getFolders: async function (folderId: number) {
-        const userId = await auth();
-        // if folder id = 0 then look for root folder
-        // the root folder is one that has a parent of null
         return db
             .select()
             .from(foldersSchema)
@@ -48,27 +45,35 @@ export const QUERIES = {
     }
     ,
     getFolderById: async function (folderId: number) {
-        const file = await db.select()
-            .from(filesSchema)
-            .where(eq(filesSchema.id, folderId));
-
-        if (!file[0]) throw new Error("File not found");
-        return file[0];
+        const folder = await db
+            .select()
+            .from(foldersSchema)
+            .where(eq(foldersSchema.id, folderId));
+        return folder[0];
     },
-
-    getRootFolder: async function () {
-        const userId = await auth();
-        const folder = await db.select()
+    getRootFolderForUser: async function (userId: string) {
+        const folder = await db
+            .select()
             .from(foldersSchema)
             .where(isNull(foldersSchema.parent)
-                && eq(foldersSchema.ownerId, userId.userId!))
-
-        if (!folder[0]) return []; // throw new Error("Folder not found")
+                && eq(foldersSchema.ownerId, userId))
+        console.log("root folder", folder)
         return folder[0];
     },
 }
 
 export const MUTATIONS = {
+    initiateDrive: async function () {
+        const user = await auth();
+        if (!user.userId) throw new Error("Unauthorized access.");
+
+        return await db.insert(foldersSchema).values({
+            name: "root",
+            ownerId: user.userId,
+            parent: null,
+        });
+    },
+
     createFile: async function (formData: {
         file: {
             name: string;
@@ -83,16 +88,18 @@ export const MUTATIONS = {
             ownerId: formData.userId,
         });
     },
+
     createFolder: async function (formData: {
         folder: {
             name: string;
             parent: number;
-        },
-        userId: string;
+        }
     }) {
+        const user = await auth();
+        if (!user.userId) throw new Error("Unauthorized access.");
         return await db.insert(foldersSchema).values({
             ...formData.folder,
-            ownerId: formData.userId,
+            ownerId: user.userId,
         });
     }
 }

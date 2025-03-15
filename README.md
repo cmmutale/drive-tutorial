@@ -9,9 +9,10 @@
 
 # 1-13-25
 
-- [ ] handle no root (empty drive)
-- [ ] add ownership files
-- [ ] functional homepage
-- [ ] allow for dynamic parent folder
+- [x] handle no root (empty drive)
+- [x] add ownership files
+- [ ] create new folders
 - [ ] delete files
-- [ ] allow for other file types other than images
+- [ ] delete folders
+- [ ] add support for other file types
+- [ ] create landing page

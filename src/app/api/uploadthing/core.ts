@@ -19,36 +19,34 @@ export const ourFileRouter = {
             maxFileCount: 1,
         },
     }).input(
-        z.object({folderId: z.number()})
+        z.object({ folderId: z.number() }) // folderId input from form
     )
         // Set permissions and file types for this FileRoute
-        .middleware(async ({input}) => {
-            // This code runs on your server before upload
+        .middleware(async ({ input }) => {
             const user = await auth();
-
-            // If you throw, the user will not be able to upload
-            // eslint-disable-next-line @typescript-eslint/only-throw-error
             if (!user.userId) throw new UploadThingError("Unauthorized");
 
-            const folder = await QUERIES.getFolderById(input.folderId);
-            if (!folder) throw new UploadThingError("Folder not found");
+            console.log("Checking folder with ID:", input.folderId);
 
-            if(folder.ownerId !== user.userId) {
-                throw new UploadThingError("Unauthorized");
-            }
+            // try {
+            //     const folder = await QUERIES.getFolderById(input.folderId);
+            //     console.log("Folder found:", folder);
+            // } catch (error) {
+            //     console.error("Error fetching folder:", error);
+            //     throw new UploadThingError("Folder not found");
+            // }
 
-            // Whatever is returned here is accessible in onUploadComplete as `metadata`
             return { userId: user.userId, parentId: input.folderId };
         })
         .onUploadComplete(async ({ metadata, file }) => {
             // This code RUNS ON YOUR SERVER after upload
             console.log("Upload complete for userId:", metadata.userId);
-            console.log("file url", file.url);
+            console.log("file url", file.ufsUrl);
 
             await MUTATIONS.createFile({
                 file: {
                     name: file.name,
-                    url: file.url,
+                    url: file.ufsUrl,
                     size: file.size,
                     parent: metadata.parentId
                 },

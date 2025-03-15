@@ -1,21 +1,28 @@
-import Link from 'next/link'
-import React from 'react'
-import { Button } from '~/components/ui/button'
+import InitiateDrive from "~/components/initiate-drive";
+import { QUERIES } from "~/server/db/queries";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
-export default function HomePage() {
-    return (
-        <div className='page-wrapper w-full min-h-screen grid place-content-center'>
-            <section className="wrapper w-full max-w-xl">
-                <div className="inner">
-                    <div className="stack space-y-4 flex flex-col items-center">
-                        <h1 className='text-4xl text-center'>
-                            Drive Tutorial - cmmdev</h1>
-                        <Link href={`/drive`}>
-                            <Button className='uppercase'>Go to drive</Button>
-                        </Link>
+export default async function GoogleDriveClone() {
+    const session = await auth();
+    if (!session.userId) return redirect("/sign-in");
+
+    const rootFolder = await QUERIES.getRootFolderForUser(session.userId);
+
+    if (!rootFolder) {
+        return (
+            <div className="page-wrapper">
+                <section className="wrapper container mx-auto py-12">
+                    <div className="stack space-y-4">
+                        <h1 className="text-3xl">Drive</h1>
+                        <p>There is no root folder</p>
+                        <InitiateDrive />
                     </div>
-                </div>
-            </section>
-        </div>
-    )
+                </section>
+            </div>
+        )
+    }
+
+    return redirect(`/f/${rootFolder.id}`)
 }
+

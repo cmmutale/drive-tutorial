@@ -12,6 +12,7 @@ import type { file_table, folder_table } from "~/server/db/schema"
 import Link from "next/link"
 import { UploadButton } from "~/components/uploadthing"
 import { useRouter } from "next/navigation"
+import CreateFolderButton from "~/components/create-folder-button"
 
 export default function DriveContents(props: {
     files: (typeof file_table.$inferSelect)[];
@@ -27,7 +28,7 @@ export default function DriveContents(props: {
                 <div className="flex justify-between items-center mb-6">
                     <div className="flex items-center">
                         <Link
-                            href={`/drive`}
+                            href={`/`}
                             className="text-gray-300 hover:text-white mr-2"
                         >
                             My Drive
@@ -76,7 +77,7 @@ export default function DriveContents(props: {
                         ))}
                     </ul>
                 </div>
-                <div className="w-full flex">
+                <div className="w-full flex gap-4 items-center">
                     <UploadButton
                         endpoint={`imageUploader`}
                         onClientUploadComplete={() => {
@@ -84,6 +85,7 @@ export default function DriveContents(props: {
                         }} input={{
                             folderId: props.currentFolderId,
                         }} />
+                    <CreateFolderButton parentId={props.currentFolderId} />
                 </div>
             </div>
         </div>
