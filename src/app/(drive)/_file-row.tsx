@@ -1,7 +1,9 @@
 import React from 'react'
-import { Folder as FolderIcon, FileIcon, Upload, ChevronRight } from "lucide-react"
+import { Folder as FolderIcon, FileIcon, Trash } from "lucide-react"
 import type { file_table, folder_table } from '~/server/db/schema';
 import Link from 'next/link';
+import { deleteFile } from '~/server/actions';
+import Tip from '~/components/tip';
 
 export function FileRow(props: { file: (typeof file_table.$inferSelect) }) {
     const { file } = props;
@@ -9,7 +11,7 @@ export function FileRow(props: { file: (typeof file_table.$inferSelect) }) {
     return (
         <li key={file.id} className="px-6 py-4 border-b border-gray-700 hover:bg-gray-750">
             <div className="grid grid-cols-12 gap-4 items-center">
-                <div className="col-span-6 flex items-center">
+                <div className="col-span-7 flex items-center">
                     <a
                         href={file.url}
                         target='_blank'
@@ -18,10 +20,19 @@ export function FileRow(props: { file: (typeof file_table.$inferSelect) }) {
                         {file.name}
                     </a>
                 </div>
-                <div className="col-span-3 text-gray-400">
+                <div className="col-span-2 text-gray-400">
                     {"File"}
                 </div>
-                <div className="col-span-3 text-gray-400">{file.size}</div>
+                <div className="col-span-2 text-gray-400">{file.size}</div>
+                <div className="col-span-1 text-gray-400">
+                    <Tip tip='delete'>
+                        <Trash
+                            onClick={() => { deleteFile(file.id) }}
+                            className="cursor-pointer size-5"
+                            aria-label='delete file' />
+
+                    </Tip>
+                </div>
             </div>
         </li>
     )

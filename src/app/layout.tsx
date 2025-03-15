@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
+import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Drive Tutorial",
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
-        <body>{children}</body>
+        <body>
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );

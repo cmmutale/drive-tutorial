@@ -13,6 +13,7 @@ import Link from "next/link"
 import { UploadButton } from "~/components/uploadthing"
 import { useRouter } from "next/navigation"
 import CreateFolderButton from "~/components/create-folder-button"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "~/components/ui/breadcrumb"
 
 export default function DriveContents(props: {
     files: (typeof file_table.$inferSelect)[];
@@ -24,7 +25,7 @@ export default function DriveContents(props: {
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
-            <div className="max-w-6xl mx-auto space-y-8">
+            <div className="max-w-6xl mx-auto space-y-6">
                 <div className="flex justify-between items-center mb-6">
                     <div className="flex items-center">
                         <Link
@@ -33,17 +34,22 @@ export default function DriveContents(props: {
                         >
                             My Drive
                         </Link>
-                        {props.parents.map((folder) => (
-                            <div key={folder.id} className="flex items-center">
-                                <ChevronRight className="mx-2 text-gray-500" size={16} />
-                                <Link
-                                    href={`/f/${folder.id}`}
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    {folder.name}
-                                </Link>
-                            </div>
-                        ))}
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                {props.parents.map((folder) => (
+                                    <BreadcrumbItem key={folder.id} className="">
+                                        {/* <ChevronRight className="mx-2 text-gray-500" size={16} /> */}
+                                        <BreadcrumbSeparator />
+                                        <BreadcrumbLink
+                                            href={`/f/${folder.id}`}
+                                            className="text-gray-300 hover:text-white"
+                                        >
+                                            {folder.name}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                ))}
+                            </BreadcrumbList>
+                        </Breadcrumb>
                     </div>
                     <div>
                         <header className="flex justify-end items-center p-4 gap-4 h-16">

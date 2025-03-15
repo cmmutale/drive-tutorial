@@ -5,7 +5,18 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from './ui/input'
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogTrigger } from './ui/alert-dialog'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogFooter,
+    AlertDialogTrigger
+} from './ui/alert-dialog'
+
 import { createFolder } from '~/server/actions'
 import { useRouter } from "next/navigation"
 
@@ -42,6 +53,12 @@ export default function CreateFolderButton(props: { parentId: number }) {
         <AlertDialog>
             <AlertDialogTrigger>New Folder</AlertDialogTrigger>
             <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Create a new folder</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action will create a new folder in the current folder.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
                 <div>
                     <Form {...form}>
                         <form
@@ -57,9 +74,15 @@ export default function CreateFolderButton(props: { parentId: number }) {
                                     />
                                 )}
                             />
-                            <AlertDialogAction asChild>
-                                <Button type='submit'>Create</Button>
-                            </AlertDialogAction>
+                            <AlertDialogFooter>
+                                <AlertDialogAction asChild>
+                                    <Button type='submit'>Create</Button>
+                                </AlertDialogAction>
+
+                                <AlertDialogCancel asChild>
+                                    <Button variant={`outline`}>or, Cancel</Button>
+                                </AlertDialogCancel>
+                            </AlertDialogFooter>
                         </form>
                     </Form>
                 </div>

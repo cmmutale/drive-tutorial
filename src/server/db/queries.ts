@@ -2,7 +2,7 @@ import "server-only"
 
 import { db } from "~/server/db"
 import { file_table as filesSchema, folder_table as foldersSchema } from "~/server/db/schema"
-import { eq, isNull } from "drizzle-orm"
+import { eq, isNull, and } from "drizzle-orm"
 import { auth } from "@clerk/nextjs/server"
 
 export const QUERIES = {
@@ -55,8 +55,7 @@ export const QUERIES = {
         const folder = await db
             .select()
             .from(foldersSchema)
-            .where(isNull(foldersSchema.parent)
-                && eq(foldersSchema.ownerId, userId))
+            .where(and(isNull(foldersSchema.parent), eq(foldersSchema.ownerId, userId)))
         console.log("root folder", folder)
         return folder[0];
     },
@@ -67,11 +66,15 @@ export const MUTATIONS = {
         const user = await auth();
         if (!user.userId) throw new Error("Unauthorized access.");
 
-        return await db.insert(foldersSchema).values({
+        const rootFolderResult = await db.insert(foldersSchema).values({
             name: "root",
             ownerId: user.userId,
             parent: null,
         });
+
+        // TODO: Creaate utility folders; trash, share, network, etc.
+
+        return rootFolderResult;
     },
 
     createFile: async function (formData: {

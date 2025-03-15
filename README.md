@@ -11,8 +11,9 @@
 
 - [x] handle no root (empty drive)
 - [x] add ownership files
-- [ ] create new folders
-- [ ] delete files
+- [x] create new folders
+- [x] delete files
 - [ ] delete folders
 - [ ] add support for other file types
+- [ ] create hidden folder pattern
 - [ ] create landing page
