@@ -5,15 +5,17 @@
 - [x] Move folder open state to url
 - [x] Add auth
 - [x] Add file uploading
-- [ ] Add analytics
-
-# 1-13-25
-
 - [x] handle no root (empty drive)
 - [x] add ownership files
 - [x] create new folders
 - [x] delete files
-- [ ] delete folders
-- [ ] add support for other file types
-- [ ] create hidden folder pattern
-- [ ] create landing page
+
+
+# 1-15-25
+- [ ] add analytics
+- [ ] folder deletions
+- [ ] access control (make sure user is allowed to see folders in question)
+- [ ] file view page
+- [ ] add toast messages
+- [ ] gray out row while it is being deleted
+
